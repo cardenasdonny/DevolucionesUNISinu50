@@ -1,0 +1,90 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Dashboard.DashboardDto
+@section Styles{
+    <link href="~/lib/highcharts/css/highcharts.min.css" rel="stylesheet" />
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2><b>@ViewBag.Titulo</b></h2>
+                        </div>
+                    </div>
+                  
+                    <!-- =================Estudiante========================================== -->
+                    <!-- Small Box (Stat card) -->
+                    @*<h5 class="mb-2 mt-4">Small Box</h5>*@
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-12 ">
+                            <!-- small card -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesAbiertas</h3>
+
+                                    <p>Solicitudes abiertas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <a asp-action="Index" asp-route-estado="1" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesCerradas</h3>
+
+                                    <p>Solicitudes cerradas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <a asp-action="Index" asp-route-estado="2" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <!-- ./col -->
+                        <div class="col-lg-4 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesTotales</h3>
+
+                                    <p>Solicitudes totales</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+                                <a asp-action="Index" asp-route-estado="0" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>                            
+                           
+                    </div>
+                    <!-- /.row -->
+                    <br />
+                    
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+ 
+}
+

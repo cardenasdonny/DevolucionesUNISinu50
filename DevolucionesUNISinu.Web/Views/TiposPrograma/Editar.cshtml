@@ -1,0 +1,29 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Facultades.TipoProgramaDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+<form asp-action="Editar" asp-route-id="@Model.TipoProgramaId" autocomplete="off" id="formulario" onsubmit="return jQueryAjaxPost(this,'Editar concepto de devolución', '¿Desea editar el concepto de devolución?');">
+    <input type="hidden" asp-for="TipoProgramaId" />
+    <input type="hidden" asp-for="Estado" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Nombre" class="control-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger error"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-6 offset-md-3">
+            <input type="submit" value="Editar" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+</form>
+
+<script src="~/js/site.js"></script>
+@await Html.PartialAsync("_ValidationScriptsPartial")

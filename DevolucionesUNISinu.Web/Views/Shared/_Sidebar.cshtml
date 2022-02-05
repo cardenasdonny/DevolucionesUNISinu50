@@ -1,0 +1,218 @@
+﻿
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+   
+    <a href="index3.html" class="brand-link">
+        <img src="~/imagenes/plantilla/logo_solo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Devoluciones</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+            <div class="info">
+                <a asp-action="Dashboard" asp-controller="Admin" class="d-block">Bienvenido - @User.FindFirst("nombres").Value</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+    with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a asp-action="Dashboard" asp-controller="Admin" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                        <p>
+                            Devoluciones
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (User.IsInRole("Estudiante"))
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Crear" asp-controller="Devoluciones" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Solicitar devolución</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="1" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    
+                                        <p>Ver abiertas</p>                                  
+                                
+                                </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="4" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver cerradas</p>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="5" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver rechazadas</p>
+                            </a>
+                        </li>
+                        }
+
+                        @if (User.IsInRole("ApoyoFinanciero")||User.IsInRole("Administrador") || User.IsInRole("Observador"))
+                        {
+                           <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="0" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                @if(User.IsInRole("ApoyoFinanciero")){
+                                    <p>Ver abiertas</p>
+                                }else{
+                                    <p>Ver todas</p>
+                                }
+                                
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="1" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                @if(User.IsInRole("ApoyoFinanciero")){
+                                    <p>En proceso</p>
+                                }else{
+                                    <p>Ver abiertas</p>
+                                }
+                                
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="4" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver cerradas</p>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="5" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver rechazadas</p>
+                            </a>
+                        </li>
+                        }
+
+                        @if (User.IsInRole("Contabilidad")||User.IsInRole("Tesoreria"))
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Index" asp-controller="Devoluciones" asp-route-estado="0" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>                                    
+                                        <p>Gestionar devoluciones</p>                                   
+                                
+                                </a>
+                            </li>                            
+                        }                        
+
+                    </ul>
+                </li>
+
+                @if (User.IsInRole("Administrador") || User.IsInRole("Observador"))
+                {
+                   
+
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Usuarios" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Usuarios
+                        </p>
+                    </a>
+                </li>               
+
+
+
+                <li class="nav-header"></li>
+                <li class="nav-header"></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Configuración
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Facultades" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Facultades</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Programas" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Programas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="TiposPrograma" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipos de programas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="TiposIdentificacion" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tipos de identificación</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Bancos" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Bancos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="MetodosConsignacion" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Métodos consignación</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="ConceptosDevolucion" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Conceptos devolución</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                }
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

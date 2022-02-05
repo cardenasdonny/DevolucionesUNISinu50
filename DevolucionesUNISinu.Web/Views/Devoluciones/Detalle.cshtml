@@ -1,0 +1,285 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Devoluciones.DevolucionDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+<form autocomplete="off" id="formulario">
+
+    <div class="card">
+        <div class="card-body">
+            <div class=""><h2><strong>Información del estudiante:</strong></h2></div>
+            <br />
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-3">
+                    <label asp-for="Nombres" class="control-label"></label>
+                    <br />
+                    @Model.Nombres
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Apellidos" class="control-label"></label>
+                    <br />
+                    @Model.Apellidos
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="TipoIdentificacion" class="control-label"></label>
+                    <br />
+                    @Model.TipoIdentificacion
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="Identificacion" class="control-label"></label>
+                    <br />
+                    @Model.Identificacion
+                </div>
+            </div>
+
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-6">
+                    <label asp-for="Email" class="control-label"></label>
+                    <br />
+                    @Model.Email
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Telefono" class="control-label"></label>
+                    <br />
+                    @Model.Telefono
+                </div>
+            </div>
+
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-12">
+                    <label asp-for="Facultad" class="control-label"></label>
+                    <br />
+                    @Model.Facultad
+                </div>
+            </div>
+
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-12">
+                    <label asp-for="Programa" class="control-label"></label>
+                    <br />
+                    @Model.Programa
+                </div>
+            </div>
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-12">
+                    <label asp-for="TipoPrograma" class="control-label"></label>
+                    <br />
+                    @Model.TipoPrograma
+                </div>
+            </div>
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-12">
+                    <label asp-for="Semestre" class="control-label"></label>
+                    <br />
+                    @Model.Semestre
+                </div>
+            </div>
+
+            <!--Info de la devolución-->
+
+
+        </div>
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+            <div class=""><h2><strong>Concepto:</strong></h2></div>
+            <br />
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label asp-for="ConceptoDevolucion" class="control-label"></label>
+                    <br />
+                    @Model.ConceptoDevolucion
+                </div>
+                @if (Model.ConceptoDevolucionId == 4)
+                {
+                    <div class="form-group col-md-3">
+                        <label asp-for="Otro"></label>
+                        <br />
+                        @Model.Otro
+                    </div>
+                }
+                <div class="form-group col-md-3">
+                    <label asp-for="Valor" class="control-label"></label>
+                    <br />
+                    $@Model.Valor.Value.ToString("N0")
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="FechaPago" class="control-label"></label>
+                    <br />
+                    @Model.FechaPago
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class=""><h2><strong>Solicito que la devolución sea consignada en:</strong></h2></div>
+            <br />
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Banco"></label>
+                    <br />
+                    @Model.Banco
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="MetodoConsignacion"></label>
+                    <br />
+                    @Model.MetodoConsignacion
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="NumeroMetodoConsignacion" class="control-label"></label>
+                    <br />
+                    @Model.NumeroMetodoConsignacion
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class=""><h2><strong>Justificación:</strong></h2></div>
+            <div class="form-row">
+                <br />
+                <div class="form-group col-md-12">
+                    <textarea asp-for="Justificacion" class="form-control" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class=""><h2><strong>Soportes:</strong></h2></div>
+            <br />
+            @if (Model.Soportes.Count() == 0)
+            {
+
+
+                <p>No existen soportes</p>
+            }
+            else
+            {
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark text-white">
+                        <tr class="">
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">Soportes - solicitud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Soportes.Select((value, index) => new { value, index }))
+                        {
+                            <tr class="">
+                                <th scope="row" class="text-center">@(item.index + 1)</th>
+                                <td>
+                                    <a class="" href="@Url.Action("DescargarSoporte","Devoluciones",new {ruta="soportes_e/"+item.value},Context.Request.Scheme)">@item.value</a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+    @if ((User.IsInRole("Estudiante")&&@Model.Estado>=4)|| (!User.IsInRole("Estudiante")))
+    {
+        @if (Model.RutaArchivoRespuestaContabilidad != null)
+        {
+            <div class="card">
+            <div class="card-body">
+                <div class=""><h2><strong>Nota contable:</strong></h2></div>
+                <br />
+                <div class="form-group">
+                    <a class="" href="@Url.Action("DescargarSoporte","Devoluciones",new {ruta="soportes_r/"+Model.RutaArchivoRespuestaContabilidad},Context.Request.Scheme)">Descargar nota contable</a>                    
+                </div>
+               
+            </div>
+        </div>
+            
+        }
+        @if (Model.RutaArchivoRespuestaTesoreria != null)
+        {
+            <div class="card">
+            <div class="card-body">
+                <div class=""><h2><strong>Soporte de egreso:</strong></h2></div>
+                <br />
+                <div class="form-group">
+                    <a class="" href="@Url.Action("DescargarSoporte","Devoluciones",new {ruta="soportes_r/"+Model.RutaArchivoRespuestaTesoreria},Context.Request.Scheme)">Descargar soporte de egreso</a>                    
+                </div>
+               
+            </div>
+        </div>
+            
+        }
+
+         
+
+
+        <div class="card">
+            <div class="card-body">
+                <div class=""><h2><strong>Observaciones:</strong></h2></div>
+                <br />
+                <div class="form-row">
+                    <br />
+                    <div class="form-group col-md-12">
+                        <textarea asp-for="Observaciones" class="form-control" readonly></textarea>
+                    </div>
+                </div>
+
+
+
+
+                @*@if (Model.SoportesRespuesta == null || Model.SoportesRespuesta.Count() == 0)
+                {
+
+
+                    <p>No existen soportes de respuesta</p>
+                }
+                else
+                {
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thead-dark text-white">
+                            <tr class="">
+                                <th scope="col" class="text-center">#</th>
+                                <th scope="col" class="text-center">Soportes - respuesta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.SoportesRespuesta.Select((value, index) => new { value, index }))
+                            {
+                                <tr class="">
+                                    <th scope="row" class="text-center">@(item.index + 1)</th>
+                                    <td>
+                                        <a class="" href="@Url.Action("DescargarSoporte","Devoluciones",new {ruta="soportes_r/"+item.value},Context.Request.Scheme)">@item.value</a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }*@
+            </div>
+        </div>
+    }
+
+
+
+
+</form>

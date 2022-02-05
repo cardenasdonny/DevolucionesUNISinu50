@@ -1,0 +1,327 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Devoluciones.DevolucionCrearDto
+
+@section Styles{
+
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/dropzone/dropzone.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2><b>@ViewBag.Titulo</b></h2>
+                        </div>
+                    </div>
+                </div>               
+
+                <form id="formulario" name="formulario" asp-action="Crear" enctype="multipart/form-data" method="POST">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=""><h2><strong>Concepto:</strong></h2></div>
+                            <br />
+
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label asp-for="ConceptoDevolucionId"></label>
+                                    <select asp-items="@ViewBag.ListaConceptosDevolucion" id="ConceptoDevolucionId" class="form-control select-list">
+                                        <option disabled>--- Seleccione ---</option>
+                                    </select>
+                                    <span asp-validation-for="ConceptoDevolucionId" class="text-danger error"></span>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label asp-for="Otro"></label>
+                                    <input asp-for="Otro" class="form-control">
+                                    <span asp-validation-for="Otro" class="text-danger error"></span>
+                                </div>
+                                
+                                <div class="form-group col-md-2">
+                                    <label asp-for="Valor" class="control-label"></label>
+                                    <input asp-for="Valor" class="form-control">
+                                    <span asp-validation-for="Valor" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label asp-for="FechaPago" class="control-label"></label>
+                                    <input asp-for="FechaPago" class="form-control">
+                                    <span asp-validation-for="FechaPago" class="text-danger"></span>
+                                </div>
+
+                            </div>                            
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=""><h2><strong>Solicito que la devolución sea consignada en:</strong></h2></div>
+                            <br />
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label asp-for="BancoId"></label>
+                                    <select asp-items="@ViewBag.ListaBancos" id="BancoId" class="form-control select-list">
+                                        <option disabled>--- Seleccione ---</option>
+                                    </select>
+                                    <span asp-validation-for="BancoId" class="text-danger error"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="MetodoConsignacionId"></label>
+                                    <select asp-items="@ViewBag.ListaMetodosConsignacion" id="MetodoConsignacionId" class="form-control select-list">
+                                        <option disabled>--- Seleccione ---</option>
+                                    </select>
+                                    <span asp-validation-for="MetodoConsignacionId" class="text-danger error"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="NumeroMetodoConsignacion" class="control-label"></label>
+                                    <input asp-for="NumeroMetodoConsignacion" class="form-control">
+                                    <span asp-validation-for="NumeroMetodoConsignacion" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=""><h2><strong>Justificación:</strong></h2></div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+
+                                    <textarea asp-for="Justificacion" class="form-control"></textarea>
+                                    <span asp-validation-for="Justificacion" class="text-danger error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=""><h2><strong>Soportes:</strong></h2></div>
+                            <br />
+
+                            <div class="form-group col-md-12">
+                                <label for="DocumentosRequeridos" class="control-label">Documentos requeridos</label>
+                                <textarea rows="10" id="DocumentosRequeridos" class="form-control" readonly></textarea>
+                               
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="dropzone" id="dropzone-form" name="mainFileUploader">
+                                    <div class="fallback">
+                                        <input asp-for="Files" type="file" multiple />
+                                    </div>
+                                </div>
+                                <small>Se permiten máximo 10 archivos, cada uno de máximo 20 mb. Formatos permitidos: PDF.</small>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-2 offset-5">
+                        <button type="button" id="submit-all" class="btn btn-primary btn-block">Solicitar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{    
+    
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/select-form.js"></script>
+
+
+    <script>
+    $(function () {
+        /*
+        $("#FacultadId").change(function () {
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerProgramasPorFacultad";
+            var idFacultad = "#FacultadId";
+            //alert($(idFacultad).val());
+            $.getJSON(url, { id: $(idFacultad).val() }, function (data) {
+                var items = "";
+                //console.log(data)
+                $("#ProgramaId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                    //console.log(items)
+                });
+                $("#ProgramaId").html(items);
+            });
+        });
+        */
+       
+
+       
+        
+    });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Otro').attr('disabled', true);
+            $("#ConceptoDevolucionId").change(function () {
+                if ($("#ConceptoDevolucionId option:selected").val() == 5)
+                    $('#Otro').attr('disabled', false);
+                else {
+                    $('#Otro').attr('disabled', true);
+                    $('#Otro').val("");
+                }                               
+            });
+
+            var url = '@Url.Content("~/")' + "ConceptosDevolucion/ObtenerDocumentosConceptosDevolucion";
+            var conceptoDevolucionId = "#ConceptoDevolucionId";
+            //alert($(idFacultad).val());
+            $.getJSON(url, { id: $(conceptoDevolucionId).val() }, function (data) {
+                //console.log("resp" + data.resp)
+                $('#DocumentosRequeridos').val(data.resp)
+            });
+
+            $("#ConceptoDevolucionId").change(function () {
+                var url = '@Url.Content("~/")' + "ConceptosDevolucion/ObtenerDocumentosConceptosDevolucion";
+                var conceptoDevolucionId = "#ConceptoDevolucionId";
+                //alert($(idFacultad).val());
+                $.getJSON(url, { id: $(conceptoDevolucionId).val() }, function (data) {
+                    //console.log("resp" + data.resp)
+                    $('#DocumentosRequeridos').val(data.resp)
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        
+        var CountFiles = 0;
+
+        Dropzone.options.dropzoneForm = {
+            //url: "/Devoluciones/Crear",
+            url: '@Url.Action("Crear","Devoluciones", "null", Context.Request.Scheme)',
+            paramName: "formulario",
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 10,
+            maxFiles: 10,
+            maxFilesize: 20, // MB
+            dictDefaultMessage: 'Haga clic o arrastre y suelte aquí los soportes',
+            acceptedFiles: "application/pdf",
+            init: function () {
+                //console.log(algo)
+
+                var submitButton = document.querySelector("#submit-all");
+                var wrapperThis = this;
+
+                submitButton.addEventListener("click", function () {
+
+
+                    if ($("#formulario").valid()) { //check if form is valid using model annotation
+
+                        alertify.confirm('Crear solicitud de devolución', '¿Desea crear la solicitud?', function(){ 
+                        if (CountFiles > 0)
+                            if(CountFiles>10)
+                                alertify.alert('Solicitar devolución', '¡Debe adjuntar máximo 10 soportes!');
+                            else
+                                wrapperThis.processQueue();
+                        else {
+                            alertify.alert('Solicitar devolución', '¡Debe adjuntar al menos un soporte!');
+                            //colocar mensaje
+                        } }, function(){ alertify.error('Cancelado')}).set('labels', { ok: 'Guardar', cancel: 'Cancelar' }).set('notifier', 'position', 'top-right');;
+
+
+                        
+                    } else {
+                        alertify.set('notifier', 'position', 'top-right');
+                        alertify.warning('Debe llenar los campos obligatorios');
+
+                    }
+
+                });
+
+                this.on("addedfile", function (file) {
+                    CountFiles++;
+
+                    // Create the remove button
+                    var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-danger'>Eliminar archivo</button>");
+
+                    // Listen to the click event
+                    removeButton.addEventListener("click", function (e) {
+                        // Make sure the button click doesn't submit the form:
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Remove the file preview.
+                        wrapperThis.removeFile(file);
+                        CountFiles--;
+                        // If you want to the delete the file on the server as well,
+                        // you can do the AJAX request here.
+                    });
+
+                    // Add the button to the file preview element.
+                    file.previewElement.appendChild(removeButton);
+                });
+                this.on("sending", function (file, response, formData) {
+                    formData.append("ConceptoDevolucionId", $("#ConceptoDevolucionId option:selected").val());
+                    formData.append("Valor", $("#Valor").val());
+                    formData.append("FechaPago", $("#FechaPago").val());
+                    formData.append("Otro", $("#Otro").val());
+                    formData.append("FechaPago", $("#FechaPago").val());
+                    formData.append("BancoId", $('#BancoId option:selected').val());
+                    formData.append("MetodoConsignacionId", $("#MetodoConsignacionId option:selected").val());
+                    formData.append("NumeroMetodoConsignacion", $("#NumeroMetodoConsignacion").val());
+                    formData.append("Justificacion", $("#Justificacion").val());
+                    formData.append("Files", file);
+                    //console.log(response)
+                });
+
+                this.on("successmultiple", function (file, response) {
+                    //var obj = jQuery.parseJSON(response)
+                    //console.log(response);
+                    alertify.set('notifier', 'position', 'top-right');
+                    if (response.operacion == "crear") {
+                        alertify.alert('Solicitar devolución', response.mensaje, function () {
+                            window.location.href = '@Url.Action("Index", "Devoluciones", new { estado = "1" }, Context.Request.Scheme)'
+                        }).set('label', 'Aceptar'); ;
+                    } else if (response.tipoError == "warning") {
+                        alertify.notify(response.error, 'warning', 4, function () {
+
+                        })
+                    } else if (response.tipoError == "error") {
+                        alertify.alert('Solicitar devolución', response.error)
+                        $('.dropzone')[0].dropzone.files.forEach(function(file) { 
+                        file.previewElement.remove(); 
+                        $('.dropzone').removeClass('dz-started');
+                    });
+
+                    } else if (response.tipoError == "error-sesion") {
+                        alertify.notify(response.error, 'error', 4, function () {
+                            window.location.href = '@Url.Action("Login", "Usuarios")';
+                        })
+                    }
+                })
+                this.on('error', function (file, response) {
+                   // console.log(response)
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.notify("Ocurrió un error interno", 'error', 2, function () {
+                    })
+                });
+
+
+
+
+
+                //this.on('sendingmultiple', function (data, xhr, formData) {
+                //    formData.append("Name", $("#Name").val());
+                //});
+            }
+        };
+
+    </script>
+
+}

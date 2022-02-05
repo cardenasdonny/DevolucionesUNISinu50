@@ -1,0 +1,137 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Usuarios.LoginDto
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devoluciones UniSinú | Login</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+
+    <link href="~/lib/AlertifyJS/css/alertify.css" rel="stylesheet" />
+    <link href="~/lib/AlertifyJS/css/themes/bootstrap.css" rel="stylesheet" />
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-danger">
+            <div class="card-header text-center">
+                <img src="~/imagenes/plantilla/logo_rojo.png" class="img-fluid" height: auto>
+                  
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Regístrese para iniciar sesión</p>
+
+                <form asp-action="Login" method="post">
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" class="form-control" placeholder="Contraseña">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="icheck-primary">
+                                <input asp-for="RecordarMe" type="checkbox">
+                                <label asp-for="RecordarMe">
+                                    Recordarme
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-danger btn-block">Iniciar sesión</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                
+
+                <p class="mb-1">
+                    <a asp-action="OlvidePassword">Olvidé la contraseña</a>
+                </p>
+                <p class="mb-0">
+                    <a asp-action="Crear" asp-controller="Estudiantes" class="text-center">Registrarme</a>
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.min.js"></script>
+
+    <script src="~/lib/AlertifyJS/alertify.min.js"></script>
+
+    <script>
+
+
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Ok")) { <text>
+
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.alert('Confirmación de correo electrónico', "@TempData["Mensaje"]");
+
+
+                 </text>
+        }
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Registro")) { <text>
+
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.alert('Registro', "@TempData["Mensaje"]");
+
+                 </text>
+        }
+
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("OlvidePass")) { <text>
+
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.alert('Recuperar contraseña', "@TempData["Mensaje"]");
+
+                 </text>
+        }       
+
+
+        @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Error")) { <text>
+
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.error("@TempData["Mensaje"]");
+
+                 </text>
+        }
+    </script>
+
+   
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+</body>
+</html>

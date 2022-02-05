@@ -1,0 +1,112 @@
+﻿@model IEnumerable<DevolucionesUNISinu.Business.DTOs.Usuarios.UsuarioDto>
+@section Styles{
+
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2>Gestión de <b>@ViewBag.Titulo</b></h2>
+                        </div>
+                        @if (User.IsInRole("Administrador")) { 
+                    <div class="col-sm-7">
+                        <a onclick="mostrarModal('@Url.Action("Crear","Usuarios",null,Context.Request.Scheme)','Nuevo usuario')" class="btn btn-success"><i class="fas fa-plus-circle"></i> <span>Nuevo usuario</span></a>
+                    </div>
+                    }
+                    </div>
+                </div>
+
+
+                @if (Model.Count() == 0)
+                {
+    <p>No existen usuarios</p> }
+else
+{
+<table class="table table-striped custom-table table-bordered table-hover" id="tabla">
+    <thead class="thead-dark text-white">
+        <tr class="">
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Nombres y apellidos</th>
+            <th scope="col" class="text-center">Email</th>
+            <th scope="col" class="text-center">Rol</th>
+            @if (User.IsInRole("Administrador"))
+            {
+                <th scope="col" class="text-center tablaAcciones">Acciones</th>
+                <th scope="col" class="text-center">Estado</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Select((value, index) => new { value, index }))
+        {
+        <tr class="">
+
+            <th scope="row" class="text-center">@(item.index + 1)</th>
+            <td>
+                <div class="d-flex align-items-center">
+                    @item.value.Nombres @item.value.Apellidos
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    @item.value.Email
+                </div>
+            </td>
+
+
+            <td>
+                <div class="d-flex align-items-center">
+                    @item.value.Rol
+                </div>
+            </td>
+            @if (User.IsInRole("Administrador"))
+            {
+
+        <td class="text-center">
+            <a class="text-primary"
+               href="javascript:mostrarModal('@Url.Action("Editar","Usuarios",new {id=item.value.Id},Context.Request.Scheme)','Editar usuario')">
+                <i class="fas fa-edit" style="padding-right:10px" title="Editar usuario"></i>
+            </a>
+            |
+            <a class="text-danger"
+               href="javascript:mostrarModal('@Url.Action("CambiarEmail","Usuarios",new {id=item.value.Id},Context.Request.Scheme)','Actualizar email')">
+                <i class="fas fa-at" style="padding-right:10px" title="Actualizar email"></i>
+            </a>
+            |
+            <a class="text-warning"
+               href="javascript:mostrarModal('@Url.Action("CambiarPasswordDesdeAdmin","Usuarios",new {id=item.value.Id},Context.Request.Scheme)','Actualizar contraseña')">
+                <i class="fas fa-key" title="Actualizar contraseña" style="padding-right:10px"></i>
+            </a>
+
+        </td>
+                                <td class="colEstado">
+                                    @if (item.value.Estado == true)
+                                    {
+            <label class="custom-control ios-switch">
+                <input type="checkbox" class="ios-switch-control-input" checked="" onclick="cambiarEstado('@Url.Action("CambiarEstado","Usuarios",new {id=item.value.Id},Context.Request.Scheme)')">
+                <span class="ios-switch-control-indicator"></span>
+            </label> }
+        else
+        {
+        <label class="custom-control ios-switch">
+            <input type="checkbox" class="ios-switch-control-input" onclick="cambiarEstado('@Url.Action("CambiarEstado","Usuarios",new {id=item.value.Id},Context.Request.Scheme)')">
+            <span class="ios-switch-control-indicator"></span>
+        </label>}
+                                </td>}
+
+        </tr>}@*fin foreach*@
+</tbody>
+</table>}@*fin if (Model.Count() == 0)*@
+</div>
+</div>
+</div>
+</div>
+@section Scripts{
+    <script src="~/js/site.js"></script>
+    <script src="~/js/tabla.js"></script>
+}

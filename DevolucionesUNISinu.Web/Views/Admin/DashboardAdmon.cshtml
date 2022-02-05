@@ -1,0 +1,217 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Dashboard.DashboardDto
+@section Styles{
+    <link href="~/lib/highcharts/css/highcharts.min.css" rel="stylesheet" />
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h2><b>@ViewBag.Titulo</b></h2>
+                        </div>
+                    </div>
+
+
+
+                    <!-- ====================Admon======================================= -->
+                    <!-- Small Box (Stat card) -->
+                    @*<h5 class="mb-2 mt-4">Small Box</h5>*@
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesAbiertas</h3>
+
+                                    <p>Solicitudes abiertas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                @if(User.IsInRole("Administrador") || User.IsInRole("ApoyoFinanciero")){
+                                    <a asp-action="Index" asp-route-estado="1" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>                                    
+                                }else{
+                                     <a href="#" class="small-box-footer">
+                                    -                                   
+                                </a>
+                                }
+                                
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesCerradas</h3>
+                                    <p>Solicitudes cerradas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+
+                                 @if(User.IsInRole("Administrador") || User.IsInRole("ApoyoFinanciero")){
+                                    <a asp-action="Index" asp-route-estado="4" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                                                      
+                                }else{
+                                     <a href="#" class="small-box-footer">
+                                    -                                   
+                                </a>
+                                }
+                               
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesTotales</h3>
+
+                                    <p>Solicitudes totales</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-chart-pie"></i>
+                                </div>
+
+                                 @if(User.IsInRole("Administrador") || User.IsInRole("ApoyoFinanciero")){
+                                   
+                                <a asp-action="Index" asp-route-estado="0" asp-controller="Devoluciones" class="small-box-footer">
+                                    Más información <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                                }else{
+                                     <a href="#" class="small-box-footer">
+                                    -                                   
+                                </a>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-12">
+                            <!-- small card -->
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3>@Model.DevolucionesCerradasPorcentaje<sup style="font-size: 20px">%</sup></h3>
+
+                                    <p>Porcentaje de respuestas</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                                <a href="#" class="small-box-footer">
+                                    -
+                                    @*Más información <i class="fas fa-arrow-circle-right"></i>*@
+                                </a>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row justify-content-center">
+
+                        <figure class="highcharts-figure">
+                            <div id="container">
+
+                            </div>
+                        </figure>
+                    </div>
+
+
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <!-- =========================================================== -->
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script src="~/lib/highcharts/highcharts.min.js"></script>
+    <script src="~/lib/highcharts/modules/exporting.min.js"></script>
+    <script src="~/lib/highcharts/modules/export-data.min.js"></script>
+    <script src="~/lib/highcharts/modules/accessibility.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: '@Url.Action("GraficaPastel", "Admin",null,Context.Request.Scheme)',
+                success: function (data) {
+                    GraficaPastel(data)
+                }
+
+            });
+
+        });
+
+
+        function GraficaPastel(data) {
+            //alert(data.devolucionesTotales)
+            if (data.devolucionesTotales != 0) {                
+                Highcharts.chart('container', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Pocentaje de solicitudes abiertas y cerradas'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Solicitudes',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Abiertas',
+                            y: data.devolucionesAbiertas,
+                            sliced: true,
+                            selected: true
+                        }, {
+                            name: 'Cerradas',
+                            y: data.devolucionesCerradas
+                        }]
+                    }]
+                });
+
+            }
+            
+        }
+
+    </script>
+}
+

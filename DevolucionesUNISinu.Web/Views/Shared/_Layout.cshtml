@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Devoluciones UniSinú</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.css">
+    <!-- Theme style -->
+    <link href="~/adminlte/dist/css/adminlte.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="~/css/admin_custom.css" rel="stylesheet" />
+    <link href="~/css/tabla.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+
+
+
+    <!--Tabla-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/table/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="~/table/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/table/css/style.css">
+
+    <!-- Alertify -->
+    <link href="~/lib/AlertifyJS/css/alertify.css" rel="stylesheet" />
+    <link href="~/lib/AlertifyJS/css/themes/default.css" rel="stylesheet" />
+
+    <!-- Select2 -->
+
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/dropzone/dropzone.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    @RenderSection("Styles", required: false)
+
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <partial name="_Navbar" />
+        <partial name="_Sidebar" />
+        <div class="content-wrapper">
+            <main role="main" class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </main>
+
+        </div>
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                <partial name="_Footer" />
+            </div>
+        </footer>
+    </div>
+
+
+
+    <!-- MODAL GLOBAL -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="form-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GLOBAL GRANDE-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="form-modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+
+    <!-- Tabla -->
+    <script src="~/table/js/popper.min.js"></script>
+    <script src="~/table/js/main.js"></script>
+
+
+    <!-- site -->
+    <script src="~/js/site.js"></script>
+
+    <!-- Alertify -->
+    <script src="~/lib/AlertifyJS/alertify.js"></script>
+
+    <!-- Select2 -->
+
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/es.min.js"></script>
+    <script src="~/js/select.js"></script>
+
+    <script src="~/lib/dropzone/dropzone.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,122 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Estudiantes.EstudianteDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+<form asp-action="Editar" asp-route-id="@Model.EstudianteId" autocomplete="off" id="formulario" onsubmit="return jQueryAjaxPost(this,'Editar información', '¿Desea editar su información?');">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="EstudianteId" />
+    <input type="hidden" asp-for="Estado" />
+    <input type="hidden" asp-for="UsuarioId" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="Nombres"></label>
+            <input asp-for="Nombres" class="form-control" placeholder="Nombres">
+            <span asp-validation-for="Nombres" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Apellidos" class="control-label"></label>
+            <input asp-for="Apellidos" class="form-control" placeholder="Apellidos">
+            <span asp-validation-for="Apellidos" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+
+        <div class="form-group col-md-6">
+            <label asp-for="TipoIdentificacionId" class="control-label"></label>
+            <select asp-for="TipoIdentificacionId" asp-items="ViewBag.ListaTipoDocumento" class="form-control select-list">
+                <option disabled selected>--- Seleccione ---</option>
+            </select>
+            <span asp-validation-for="TipoIdentificacionId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Identificacion" class="control-label"></label>
+            <input asp-for="Identificacion" class="form-control" placeholder="Tipo de identificación">
+            <span asp-validation-for="Identificacion" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Telefono" class="control-label"></label>
+            <input asp-for="Telefono" class="form-control" placeholder="Teléfono">
+            <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="FacultadId" class="control-label"></label>
+            <select asp-for="FacultadId" id="FacultadId" asp-items="ViewBag.ListaFacultades" class="form-control select-list">
+                <option disabled selected>--- Seleccione ---</option>
+            </select>
+            <span asp-validation-for="FacultadId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-5">
+            <label asp-for="ProgramaId" class="control-label"></label>
+            @*<select asp-for="ProgramaId" id="ProgramaId" asp-items='@(new SelectList(string.Empty, "ProgramaId", "Nombre",Model.ProgramaId))' class="form-control select-list">
+                    <option disabled selected>--- Seleccione ---</option>
+                </select>*@
+            <select asp-for="ProgramaId" id="ProgramaId" asp-items='@ViewBag.Programas' class="form-control select-list">
+                <option disabled selected>--- Seleccione ---</option>
+            </select>
+            <span asp-validation-for="ProgramaId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label asp-for="Semestre" class="control-label"></label>
+            <select asp-for="Semestre" id="SemestreId" asp-items='@ViewBag.Semestres' class="form-control">
+                <option disabled selected>0</option>
+            </select>
+            <span asp-validation-for="Semestre" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- /.col -->
+        <div class="col-2 offset-5">
+            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+        </div>
+        <!-- /.col -->
+    </div>
+</form>
+<script src="~/js/site.js"></script>
+<script src="~/lib/select2/js/select2.min.js"></script>
+<script src="~/lib/select2/js/i18n/es.min.js"></script>
+<script src="~/js/select-form.js"></script>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+    $(function () {
+        $("#FacultadId").change(function () {
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerProgramasPorFacultad";
+            var idFacultad = "#FacultadId";
+            $.getJSON(url, { id: $(idFacultad).val() }, function (data) {
+                var items = "";
+                $("#ProgramaId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#ProgramaId").html(items);
+            });
+        });
+
+
+        $("#ProgramaId").change(function () {
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerSemestresPorPrograma";
+            var idFacultad = "#ProgramaId";
+            $.getJSON(url, { id: $(idFacultad).val() }, function (data) {
+                var items = "";
+                $("#SemestreId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#SemestreId").html(items);
+            });
+        });
+    });
+</script>

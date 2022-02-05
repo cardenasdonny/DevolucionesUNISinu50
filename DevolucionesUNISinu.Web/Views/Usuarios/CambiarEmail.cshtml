@@ -1,0 +1,133 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Usuarios.UsuarioEditarEmailDto
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+
+
+<form asp-action="CambiarEmail" autocomplete="off" onsubmit="return AjaxPostActualizarEmail(this,'Actualizar email','¿Desea actualizar el email?');">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="UsuarioId" type="hidden" />
+    <div class="form-group">
+        <label asp-for="EmailAnterior" class="control-label"></label>
+        <input disabled asp-for="EmailAnterior" class="form-control" />
+        <span asp-validation-for="EmailAnterior" class="text-danger error"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmarEmail" class="control-label"></label>
+        <input asp-for="ConfirmarEmail" class="form-control" />
+        <span asp-validation-for="ConfirmarEmail" class="text-danger error"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-6 offset-md-3">
+            <input type="submit" value="Guardar" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+</form>
+
+
+
+<script>
+
+     /* Para realizar valdiaciones
+    if (document.getElementById("num").value == '') {
+        $('#num').siblings('span.error').text('Ingrese el nombre');
+        isValid = false;
+    } else {
+        $('#NumeroMetodoConsignacion').siblings('span.error').text('');
+    }
+*/
+
+$(document).ready(function () {
+
+
+
+    //Para actualizar email
+    AjaxPostActualizarEmail = (form, titulo, mensaje) => {
+
+        alertify.confirm(titulo, mensaje,
+            function () {
+                try {
+                    $.ajax({
+                        type: 'POST',
+                        url: form.action,
+                        data: new FormData(form),
+                        contentType: false,
+                        processData: false,
+                        success: function (res) {
+                            if (res.isValid) {
+
+                                if (res.operacion == "actualizarEmail") {
+                                    alert(res.usuario);
+
+                                    if (res.usuario != "Administrador") {
+                                        
+                                        alertify.alert('Actualizar email', 'Se ha cambiado el email éxitosamente, al hacer clic en el botón ok, se cerrará la sesión y deberá confirmar su nuevo correo antes de volver a iniciar sesión', function () {                                            
+                                            location.href = '@Url.Action("CerrarSesion","Usuarios")';
+                                        });
+
+                                    } else {
+                                        alertify.alert('Actualizar email', 'Se ha cambiado el email éxitosamente, si usted es un administrador, cierre sesión y confirme su nuevo correo electrónico.', function () {
+                                            $('#form-modal .modal-body').html('');
+                                            $('#form-modal .modal-title').html('');
+                                            $('#form-modal').modal('hide');
+                                            location.reload();
+                                        });
+
+                                    }                                    
+
+                                }
+                            }
+                            else {
+                                alertify.set('notifier', 'position', 'top-right');
+                                if (res.tipoError == "danger")
+                                    alertify.error(res.error);
+                                else {
+                                    alertify.warning(res.error);
+                                    $('#form-modal .modal-body').html(res.html);
+                                }
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    })
+                } catch (ex) {
+                    console.log(ex)
+                }
+            },
+            function () {
+                alertify.error('Cancelado');
+            }).set('labels', { ok: 'Guardar', cancel: 'Cancelar' }).set('notifier', 'position', 'top-right');
+
+
+        //to prevent default form submit event
+        return false;
+    }
+
+
+});
+
+
+</script>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+
+
+
+
+
+

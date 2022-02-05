@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/",
+      "files": [
+        "js/jquery.dataTables.min.js",
+        "js/dataTables.bootstrap4.min.js",
+        "images/sort_asc.png",
+        "images/sort_asc_disabled.png",
+        "images/sort_both.png",
+        "images/sort_desc.png",
+        "images/sort_desc_disabled.png",
+        "css/dataTables.bootstrap4.min.css",
+        "css/jquery.dataTables.css",
+        "js/dataTables.dataTables.min.js"
+      ]
+    },
+    {
+      "library": "AlertifyJS@1.13.1",
+      "destination": "wwwroot/lib/AlertifyJS/"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/",
+      "files": [
+        "js/select2.min.js",
+        "css/select2.min.css",
+        "js/i18n/es.js"
+      ]
+    },
+    {
+      "library": "dropzone@5.9.2",
+      "destination": "wwwroot/lib/dropzone/",
+      "files": [
+        "dropzone.min.css",
+        "dropzone.min.js",
+        "dropzone-amd-module.min.js"
+      ]
+    },
+    {
+      "library": "highcharts@9.1.2",
+      "destination": "wwwroot/lib/highcharts/",
+      "files": [
+        "css/annotations/popup.css",
+        "css/highcharts.min.css",
+        "css/themes/sand-signika.min.css",
+        "css/themes/sand-signika.css",
+        "css/themes/grid-light.min.css",
+        "css/themes/grid-light.css",
+        "css/themes/dark-unica.min.css",
+        "css/themes/dark-unica.css",
+        "css/stocktools/gui.min.css",
+        "css/stocktools/gui.css",
+        "css/annotations/popup.min.css",
+        "highcharts.min.js",
+        "modules/accessibility.min.js",
+        "modules/export-data.min.js",
+        "modules/exporting.min.js"
+      ]
+    }
+  ]
+}

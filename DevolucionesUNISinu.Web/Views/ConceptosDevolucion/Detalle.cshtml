@@ -1,0 +1,21 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Devoluciones.ConceptoDevolucionDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+<form  autocomplete="off" id="formulario">  
+    <div class="form-group">
+        <label asp-for="Nombre" class="control-label"></label>
+        <input asp-for="Nombre" class="form-control" readonly />
+        <span asp-validation-for="Nombre" class="text-danger error"></span>
+        <br />
+        <label asp-for="DocumentosRequeridos" class="control-label"></label>
+        <textarea rows="10" asp-for="DocumentosRequeridos" class="form-control" readonly></textarea>
+        <span asp-validation-for="DocumentosRequeridos" class="text-danger error" readonly></span>
+    </div>
+    
+</form>

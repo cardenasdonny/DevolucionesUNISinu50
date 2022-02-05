@@ -1,0 +1,226 @@
+﻿@model IEnumerable<DevolucionesUNISinu.Business.DTOs.Devoluciones.DevolucionEncabezadoDto>
+
+@section Styles{
+
+}
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h2><b>@ViewBag.Titulo</b></h2>
+                            </div>
+                            @if (User.IsInRole("Estudiante"))
+                            {
+                                <div class="col-sm-7">
+                                    <a asp-action="Crear" class="btn btn-success"><i class="fas fa-plus-circle"></i> <span>Nueva devolución</span></a>
+                                </div>
+                            }
+
+                            </div>
+                    </div>
+
+
+                    @if (Model.Count() == 0)
+                    {
+                <div class="text-center">
+                    <p>No existen solicitudes de devolución</p>
+                </div>
+                        
+                    }
+                    else
+                    {
+
+                        <table class="table table-striped custom-table table-bordered table-hover"  id="tabla">
+                            <thead class="thead-dark text-white">
+                                <tr class="">
+                                    <th scope="col" class="text-center">#</th>
+                                    <th scope="col" class="text-center">Radicado</th>
+                                    <th scope="col" class="text-center">Estudiante</th>
+                                    <th scope="col" class="text-center">Identificación</th>
+                                    <th scope="col" class="text-center">Fecha de recepción</th>                                    
+                                    <th scope="col" class="text-center">Fecha de respuesta</th>                                    
+                                    <th scope="col" class="text-center tablaAcciones">Estado</th>
+                                    @if (!User.IsInRole("Estudiante")){
+                                    <th scope="col" class="text-center">Dias</th>
+                                    }
+                                    <th scope="col" class="text-center tablaAcciones">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Select((value, index) => new { value, index }))
+                                {
+                                    
+                                <tr class="">
+                                    <th scope="row" class="text-center">@(item.index + 1)</th>
+                                    <td class="text-center">
+                                        <div class="d-flex align-items-center text-center">
+                                            <a href="javascript:mostrarModalLg('@Url.Action("Detalle","Devoluciones",new {id=item.value.DevolucionId},Context.Request.Scheme)','Detalle devolución - @item.value.NumeroRadicado')" class="text-center">@item.value.NumeroRadicado</a>
+                                        </div>
+                                    </td>
+                                    <td>@item.value.NombreApellidoEstudiante</td>
+                                    <td class="text-center">@item.value.Identificacion</td>
+                                    <td class="text-center">@item.value.FechaRecepcion</td>
+                                    @*columna fecha de respuesta*@
+                                    @if (@item.value.Estado >= 1 && @item.value.Estado<=3)
+                                    {
+                                        <td class="align-items-center colEstado"><span class="badge badge-info">Pendiente</span></td>
+                                    }
+                                    else
+                                    {
+
+                                        <td class="text-center">@item.value.FechaRespuesta</td>
+
+                                    }
+                                    @*columna proceso*@
+
+                                    <td class="align-items-center colEstado">
+
+                                        @if (@item.value.Estado == 4)
+                                        {
+                                            <span class="badge badge-success">@item.value.EstadoNombre</span>
+
+                                        }
+                                        @if (@item.value.Estado == 5)
+                                        {
+                                            <span class="badge badge-danger">@item.value.EstadoNombre</span>
+
+                                        }
+                                        @if (@item.value.Estado >= 1 && @item.value.Estado<=3)
+                                        {
+                                            <span class="badge badge-info">@item.value.EstadoNombre</span>
+                                            @if (item.value.EstadoRespuesta == 2 && !User.IsInRole("Estudiante"))
+                                            {@*por vencer*@
+                                            <span class="badge badge-warning">@item.value.EstadoRespuestaNombre</span>
+                                        }
+                                            @if (item.value.EstadoRespuesta == 3 && !User.IsInRole("Estudiante"))
+                                            {@*vencida*@
+                                            <span class="badge badge-danger">@item.value.EstadoRespuestaNombre</span>
+                                        }
+
+                                        }
+                                    </td>
+
+                                    @if ((@item.value.Estado>=1 && @item.value.Estado<=3) && !User.IsInRole("Estudiante"))
+                                    {
+                                        @if (item.value.EstadoRespuesta == 1)
+                                        {
+                                            <td class="align-items-center colEstado"><span class="badge badge-info">@item.value.Dias</span></td>
+
+                                        }
+                                        @if (item.value.EstadoRespuesta == 2)
+                                        {
+                                            <td class="align-items-center colEstado"><span class="badge badge-warning">@item.value.Dias</span></td>
+
+                                        }
+                                        @if (item.value.EstadoRespuesta == 3)
+                                        {
+                                            <td class="align-items-center colEstado"><span class="badge badge-danger">@item.value.Dias</span></td>
+
+                                        }
+
+
+                                    }@*else{
+                                        <td class="align-items-center colEstado">-</td>
+                                    }*@
+                                    @*@if (@item.value.Estado == 2 && User.IsInRole("Administrador"))
+                                    {
+                                        <td class="align-items-center colEstado"><span class="badge badge-success">Cerrada </span></td>
+
+                                    }*@
+
+                                    <td class="text-center">
+
+                                         @*Tesorería*@
+
+                                        @if ((@item.value.Estado >= 1 && @item.value.Estado <= 3) && User.IsInRole("Administrador"))
+                                        {                                            
+                                            <a class="text-danger"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=0},Context.Request.Scheme)','Devolver la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-reply" title="Devolver solicitud"></i>
+                                            </a>
+
+                                            <a class="text-success"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=1},Context.Request.Scheme)','Aprobar la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-check" title="Aprobar solicitud"></i>
+                                                
+                                            </a>
+                                        }
+
+
+                                        @*Apoyo financiero*@
+                                        @*@if ((@item.value.Estado >= 1 && @item.value.Estado <= 3) && User.IsInRole("ApoyoFinanciero"))*@
+                                        @if (@item.value.Estado == 1 && User.IsInRole("ApoyoFinanciero"))
+                                        {                                            
+                                            <a class="text-danger"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=0},Context.Request.Scheme)','Rechazar la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-reply" title="Rechazar solicitud"></i>
+                                            </a>
+
+                                            <a class="text-success"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=1},Context.Request.Scheme)','Enviar a Contabilidad la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-check" title="Enviar a Contabilidad"></i>
+                                                
+                                            </a>
+                                        }
+                                        @*Contabilidad*@
+
+                                        @*@if ((@item.value.Estado >= 1 && @item.value.Estado <= 3) && User.IsInRole("Contabilidad"))*@
+                                        @if (@item.value.Estado == 2 && User.IsInRole("Contabilidad"))
+                                        {                                            
+                                            <a class="text-danger"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=0},Context.Request.Scheme)','Devolver a Apoyo Financiero la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-reply" title="Devolver a Apoyo Financiero"></i>
+                                            </a>
+
+                                            <a class="text-success"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=1},Context.Request.Scheme)','Enviar a tesorería la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-check" title="Enviar a tesorería"></i>
+                                                
+                                            </a>
+                                        }
+
+                                         @*Tesorería*@
+
+                                        @*@if ((@item.value.Estado >= 1 && @item.value.Estado <= 3) && User.IsInRole("Tesoreria"))*@
+                                        @if (@item.value.Estado == 3 && User.IsInRole("Tesoreria"))
+                                        {                                            
+                                            <a class="text-danger"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=0},Context.Request.Scheme)','Devolver a Contabilidad la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-reply" title="Devolver a Apoyo Financiero"></i>
+                                            </a>
+
+                                            <a class="text-success"
+                                               href="javascript:mostrarModalLg('@Url.Action("Responder","Devoluciones",new {id=item.value.DevolucionId, tipoRespuesta=1},Context.Request.Scheme)','Aprobar la solicitud - @item.value.NumeroRadicado')">
+                                                <i class="fas fa-check" title="Enviar a tesorería"></i>
+                                                
+                                            </a>
+                                        }
+
+
+
+                                        <a class="text-info"
+                                           href="javascript:mostrarModalLg('@Url.Action("Detalle","Devoluciones",new {id=item.value.DevolucionId},Context.Request.Scheme)','Detalle devolución - @item.value.NumeroRadicado')">
+                                            <i class="fas fa-search-plus" title="Detalle"></i>
+                                        </a>
+                                        
+                                    </td>
+                                </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+        <script src="~/js/site.js"></script>
+        <script src="~/js/tabla.js"></script>        
+    }
+

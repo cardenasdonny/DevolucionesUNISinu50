@@ -1,0 +1,39 @@
+﻿<!-- Content Wrapper. Contains page content -->
+<div class="container-fluid">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Página de error: @ViewBag.ErrorCode</h1>
+                </div>
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="error-page">
+            <h2 class="headline text-danger">Error interno</h2>
+
+            <div class="error-content">
+                <h3><i class="fas fa-exclamation-triangle text-danger"></i> ¡Oops! Algo ha salido mal.</h3>
+
+                <br />
+                <div class="alert alert-danger">
+                    <h5>Mensaje de error:</h5>
+                    <hr />
+                    <p>@ViewBag.ErrorMessage</p>
+                </div>
+                <p>
+                    póngase en contacto con el administrador del sistema
+                </p>
+
+
+            </div>
+        </div>
+        <!-- /.error-page -->
+
+    </section>
+</div>

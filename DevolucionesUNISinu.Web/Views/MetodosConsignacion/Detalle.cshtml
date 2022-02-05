@@ -1,0 +1,17 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Devoluciones.MetodoConsignacionDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+<form asp-action="Editar" autocomplete="off" id="formulario">
+    <div class="form-group">
+        <label asp-for="Nombre" class="control-label"></label>
+        <input asp-for="Nombre" class="form-control" readonly />
+        <span asp-validation-for="Nombre" class="text-danger error"></span>
+    </div>
+
+</form>

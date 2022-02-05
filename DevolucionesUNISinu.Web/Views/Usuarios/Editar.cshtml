@@ -1,0 +1,49 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Usuarios.UsuarioEditarDto
+
+@{
+    Layout = null;
+}
+@section Styles{
+
+}
+
+
+
+<form asp-action="Editar" autocomplete="off" onsubmit="return jQueryAjaxPost(this,'Actualizar usuario', '¿Desea actualizar el usuario?');">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="UsuarioId" type="hidden" />
+    
+    <div class="form-group">
+        <label asp-for="Nombres" class="control-label"></label>
+        <input asp-for="Nombres" class="form-control" />
+        <span asp-validation-for="Nombres" class="text-danger error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Apellidos" class="control-label"></label>
+        <input asp-for="Apellidos" class="form-control" />
+        <span asp-validation-for="Apellidos" class="text-danger error"></span>
+    </div>  
+
+
+
+    <div class="form-group">
+        <label asp-for="Rol" class="control-label"></label>
+        <select asp-for="Rol" asp-items="ViewBag.ListaRoles" class="form-control">
+            <option disabled selected>--- Seleccione ---</option>
+        </select>
+        <span asp-validation-for="Rol" class="text-danger error"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-md-6 offset-md-3">
+            <input type="submit" value="Guardar" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+</form>
+
+<script src="~/js/site.js"></script>
+@await Html.PartialAsync("_ValidationScriptsPartial")

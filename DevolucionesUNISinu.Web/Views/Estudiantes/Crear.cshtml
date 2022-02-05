@@ -1,0 +1,257 @@
+﻿@model DevolucionesUNISinu.Business.DTOs.Estudiantes.EstudianteRegistroDto
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devoluciones UniSinú | Registro)</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+
+    <!-- Alertify -->
+    <link href="~/lib/AlertifyJS/css/alertify.css" rel="stylesheet" />
+    <link href="~/lib/AlertifyJS/css/themes/default.css" rel="stylesheet" />
+
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body class="hold-transition register-page">
+    <br />
+    <br />
+    <div class="container ">
+        <div class="card card-outline card-danger">
+            <div class="card-header text-center">
+                <img src="~/imagenes/plantilla/logo_rojo.png" class="img-fluid" width="300" />
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Debe registrarse, favor llenar todos los campos</p>
+                <form asp-action="Crear" autocomplete="on" id="formulario">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Nombres"></label>
+                            <input asp-for="Nombres" class="form-control" placeholder="Nombres">
+                            <span asp-validation-for="Nombres" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Apellidos" class="control-label"></label>
+                            <input asp-for="Apellidos" class="form-control" placeholder="Apellidos">
+                            <span asp-validation-for="Apellidos" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="TipoIdentificacionId" class="control-label"></label>
+                            <select required asp-for="TipoIdentificacionId"  asp-items="ViewBag.ListaTipoDocumento" class="form-control select-list">
+                                <option disabled selected>--- Seleccione ---</option>
+                            </select>
+                            <span asp-validation-for="TipoIdentificacionId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Identificacion" class="control-label"></label>
+                            <input asp-for="Identificacion" class="form-control" placeholder="Tipo de identificación">
+                            <span asp-validation-for="Identificacion" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Telefono" class="control-label"></label>
+                            <input asp-for="Telefono" class="form-control" placeholder="Teléfono">
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="FacultadId" class="control-label"></label>
+
+                            <select asp-for="FacultadId" id="FacultadId" asp-items="ViewBag.ListaFacultades" class="form-control select-list">
+                                <option disabled selected>--- Seleccione ---</option>
+                            </select>
+                            <span asp-validation-for="FacultadId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-5">
+                            <label asp-for="ProgramaId" class="control-label"></label>
+                            <select asp-for="ProgramaId" id="ProgramaId" asp-items='@(new SelectList(string.Empty, "ProgramaId", "Nombre"))' class="form-control select-list">
+                                <option disabled selected>--- Seleccione ---</option>
+                            </select>
+                            <span asp-validation-for="ProgramaId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label asp-for="Semestre" class="control-label"></label>
+                            <select asp-for="Semestre" id="SemestreId" asp-items='@(new SelectList(string.Empty, "ProgramaId", "Nombre"))' class="form-control">
+                                <option disabled selected>0</option>
+                            </select>
+                            <span asp-validation-for="Semestre" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="ConfirmarEmail" class="control-label"></label>
+                            <input asp-for="ConfirmarEmail" class="form-control" placeholder="Email">
+                            <span asp-validation-for="ConfirmarEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" placeholder="Contraseña">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="ConfirmarPassword" class="control-label"></label>
+                            <input asp-for="ConfirmarPassword" class="form-control" placeholder="Confirmar contraseña">
+                            <span asp-validation-for="ConfirmarPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="text-muted">                        
+                        <p class="text-danger"><small>La contraseña debe contener mínimo 9 caracteres, se debe utilizar una contraseña que contenga mínimo un carácter en mayúsculas, mínimo un carácter en minúsculas y mínimo un carácter especial.</small></p>
+                    </div>
+
+                    <br />
+                    <div class="row">
+
+                        <!-- /.col -->
+                        <div class="col-2 offset-5">
+                            <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+
+                <a asp-action="Login" asp-controller="Usuarios" class="text-center">Ya me encuentro registrado</a>
+            </div>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
+    </div>
+    <!-- /.register-box -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.min.js"></script>
+
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/select2/js/i18n/es.min.js"></script>
+    <script src="~/js/select-form.js"></script>
+
+
+    <!-- Alertify -->
+    <script src="~/lib/AlertifyJS/alertify.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+    $(function () {
+        $("#FacultadId").change(function () {
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerProgramasPorFacultad";
+            var idFacultad = "#FacultadId";
+            //alert($(idFacultad).val());
+            $.getJSON(url, { id: $(idFacultad).val() }, function (data) {
+                var items = "";
+                //console.log(data)
+                $("#ProgramaId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                    //console.log(items)
+                });
+                $("#ProgramaId").html(items);
+            });
+        });
+
+
+        $("#ProgramaId").change(function () {
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerSemestresPorPrograma";
+            var idFacultad = "#ProgramaId";
+            $.getJSON(url, { id: $(idFacultad).val() }, function (data) {
+                var items = "";
+                $("#SemestreId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#SemestreId").html(items);
+            });
+        });
+        
+    });
+    </script>
+
+    <script>
+
+        function facultades(){
+           //alert("dfdf");
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerFacultades";
+           
+            $.getJSON(url, function (data) {
+                var items = "";
+                $("#FacultadId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#FacultadId").html(items);
+            });
+
+        }
+        function tiposIdentificacion(){
+            var url = '@Url.Content("~/")' + "Estudiantes/ObtenerTiposIdentificacion";
+           
+            $.getJSON(url, function (data) {
+                var items = "";
+                $("#TipoIdentificacionId").empty();
+                $.each(data, function (i, row) {
+                    items += "<option value='" + row.value + "'>" + row.text + "</option>";
+                });
+                $("#TipoIdentificacionId").html(items);
+            });
+
+        }
+    @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Error")) { <text>
+        //alert("sdsdds");
+        alertify.set('notifier', 'position', 'top-right');
+        alertify.error("@TempData["Mensaje"]");
+        facultades();
+                tiposIdentificacion();
+
+                 </text>
+        }
+    @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("Password")) { <text>
+
+        alertify.alert('Contraseña inválida', "@TempData["Mensaje"]");
+        facultades();
+                tiposIdentificacion();
+
+                 </text>
+        }
+
+    @if(TempData["Mensaje"] != null && TempData["Accion"].ToString().Equals("ErrorPassword")) { <text>
+
+        alertify.alert('No se ha podido registrar el usuario', "@TempData["Mensaje"]"); 
+            
+                facultades();
+                tiposIdentificacion();
+
+                 </text>
+
+
+        }
+    </script>
+</body>
+</html>
+
